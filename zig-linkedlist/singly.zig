@@ -21,7 +21,10 @@ const SinglyStruct = struct {
             singly_list.*.first = node;
         }
         singly_list.*.last = node;
+        singly_list.len += 1;
     }
+
+
 };
 
 test "SinglyStruct" {
@@ -31,11 +34,16 @@ test "SinglyStruct" {
     var singly_list = SinglyStruct{};
     var node_1 = SinglyStruct.Node{.value = 0,};
     SinglyStruct.append(&singly_list,&node_1);
+    try expect(singly_list.len ==  1);
+
     var node_2 = SinglyStruct.Node{.value = 127,};
     SinglyStruct.append(&singly_list,&node_2);
+    try expect(singly_list.len ==  2);
+
     var node_3 = SinglyStruct.Node{.value = 255,};
     SinglyStruct.append(&singly_list,&node_3);
-    
+    try expect(singly_list.len ==  3);
+
     try expect(singly_list.first.?.value ==  0);
     try expect(singly_list.first.?.next.?.value ==  127);
     try expect(singly_list.last.?.value ==  255);
