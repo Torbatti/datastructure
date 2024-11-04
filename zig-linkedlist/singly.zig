@@ -39,6 +39,7 @@ const SinglyStruct = struct {
                 
                 singly_list.first = null;
                 singly_list.last = null;
+                singly_list.len -= 1;
                 return;
             };
 
@@ -51,6 +52,7 @@ const SinglyStruct = struct {
                 // detach the last node from next pointer by making it null
                 singly_list.last = temp_node_pointer;
                 temp_node_pointer.next = null;
+                singly_list.len -= 1;
                 return;
             }
         }
@@ -75,7 +77,6 @@ test "SinglyStruct" {
     SinglyStruct.append(&singly_list,&node_3);
     try expect(singly_list.len ==  3);
 
-
     try expect(singly_list.first.?.value ==  0);
     try expect(singly_list.first.?.next.?.value ==  127);
     try expect(singly_list.last.?.value ==  255);
@@ -88,7 +89,6 @@ test "SinglyStruct" {
 
     SinglyStruct.detach_last(&singly_list);
     try expect(singly_list.last == null);
-
 
 }
 
