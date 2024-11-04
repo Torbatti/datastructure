@@ -24,7 +24,35 @@ const SinglyStruct = struct {
         singly_list.len += 1;
     }
 
+    pub fn detach_last(singly_list: *SinglyStruct) void {
 
+        var temp_node_pointer: *Node = undefined;
+        temp_node_pointer = singly_list.first orelse return; // list is empty
+
+        while (true) {
+            // there is only one node in the list
+            _ = temp_node_pointer.next orelse {
+                assert(singly_list.*.first == singly_list.*.last);
+                
+                singly_list.*.first = null;
+                singly_list.*.last = null;
+                return;
+            };
+
+            // more than one node in the list
+            if (temp_node_pointer.next.?.next != null) {
+                // youve reached the two last nodes
+                // detach the last node from next pointer by making it null
+                temp_node_pointer = temp_node_pointer.next orelse unreachable; // unreachable should never happen
+            }else {
+                // next node is the last node
+                // detach it
+                singly_list.*.last = temp_node_pointer;
+                temp_node_pointer.*.next = null;
+                return;
+            }
+        }
+    }
 };
 
 test "SinglyStruct" {
@@ -32,6 +60,7 @@ test "SinglyStruct" {
     try expect(empty_list.len == 0);
 
     var singly_list = SinglyStruct{};
+    
     var node_1 = SinglyStruct.Node{.value = 0,};
     SinglyStruct.append(&singly_list,&node_1);
     try expect(singly_list.len ==  1);
@@ -44,9 +73,21 @@ test "SinglyStruct" {
     SinglyStruct.append(&singly_list,&node_3);
     try expect(singly_list.len ==  3);
 
+
     try expect(singly_list.first.?.value ==  0);
     try expect(singly_list.first.?.next.?.value ==  127);
     try expect(singly_list.last.?.value ==  255);
+
+    SinglyStruct.detach_last(&singly_list);
+    try expect(singly_list.last.?.value ==  127);
+
+    SinglyStruct.detach_last(&singly_list);
+    try expect(singly_list.last.?.value ==  0);
+
+    SinglyStruct.detach_last(&singly_list);
+    try expect(singly_list.last == null);
+
+
 }
 
 
