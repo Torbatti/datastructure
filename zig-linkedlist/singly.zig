@@ -41,12 +41,11 @@ const SinglyStruct = struct {
 
             // more than one node in the list
             if (temp_node_pointer.next.?.next != null) {
-                // youve reached the two last nodes
-                // detach the last node from next pointer by making it null
                 temp_node_pointer = temp_node_pointer.next orelse unreachable; // unreachable should never happen
             }else {
-                // next node is the last node
-                // detach it
+                // youve reached the last two nodes
+                // make last pointer point at the temp pointer
+                // detach the last node from next pointer by making it null
                 singly_list.*.last = temp_node_pointer;
                 temp_node_pointer.*.next = null;
                 return;
