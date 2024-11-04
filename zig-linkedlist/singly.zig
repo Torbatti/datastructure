@@ -35,7 +35,7 @@ const SinglyStruct = struct {
         while (true) {
             // there is only one node in the list
             _ = temp_node_pointer.next orelse {
-                assert(singly_list.first == singly_list.*.last);
+                assert(singly_list.first == singly_list.last);
                 
                 singly_list.first = null;
                 singly_list.last = null;
