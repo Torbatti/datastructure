@@ -13,14 +13,17 @@ const SinglyStruct = struct {
     len: usize = 0,
 
     pub fn append(singly_list: *SinglyStruct,node: *Node) void {
-        if (singly_list.*.last != null) {
-            singly_list.*.last.?.next = node;
+        // list is empty
+        if (singly_list.last == null and singly_list.first == null) {
+            singly_list.first = node;
         }
 
-        if (singly_list.*.last == null) {
-            singly_list.*.first = node;
+        // list is not empty
+        if (singly_list.last != null) {
+            singly_list.last.?.next = node;
         }
-        singly_list.*.last = node;
+
+        singly_list.last = node;
         singly_list.len += 1;
     }
 
@@ -32,10 +35,10 @@ const SinglyStruct = struct {
         while (true) {
             // there is only one node in the list
             _ = temp_node_pointer.next orelse {
-                assert(singly_list.*.first == singly_list.*.last);
+                assert(singly_list.first == singly_list.*.last);
                 
-                singly_list.*.first = null;
-                singly_list.*.last = null;
+                singly_list.first = null;
+                singly_list.last = null;
                 return;
             };
 
@@ -46,8 +49,8 @@ const SinglyStruct = struct {
                 // next node is the last one
                 // make last pointer point at the current node 
                 // detach the last node from next pointer by making it null
-                singly_list.*.last = temp_node_pointer;
-                temp_node_pointer.*.next = null;
+                singly_list.last = temp_node_pointer;
+                temp_node_pointer.next = null;
                 return;
             }
         }
