@@ -25,6 +25,8 @@ const SinglyStruct = struct {
 
         singly_list.last = node;
         singly_list.len += 1;
+
+        return;
     }
 
     pub fn detach_last(singly_list: *SinglyStruct) void {
@@ -36,7 +38,7 @@ const SinglyStruct = struct {
             // there is only one node in the list
             _ = temp_node_pointer.next orelse {
                 assert(singly_list.first == singly_list.last);
-                
+
                 singly_list.first = null;
                 singly_list.last = null;
                 singly_list.len -= 1;
@@ -48,7 +50,7 @@ const SinglyStruct = struct {
                 temp_node_pointer = temp_node_pointer.next orelse unreachable; // unreachable should never happen
             }else {
                 // next node is the last one
-                // make last pointer point at the current node 
+                // make last pointer point at the current node
                 // detach the last node from next pointer by making it null
                 singly_list.last = temp_node_pointer;
                 temp_node_pointer.next = null;
@@ -57,6 +59,27 @@ const SinglyStruct = struct {
             }
         }
     }
+
+    pub fn detach_first(singly_list: *SinglyStruct) void {
+
+        var temp_node_pointer: *Node = undefined;
+        temp_node_pointer = singly_list.first orelse return; // list is empty
+
+        //only one node in the list
+        if (singly_list.first.? == singly_list.last.?) {
+            singly_list.first = null;
+            singly_list.last = null;
+            singly_list.len = 0;
+            return;
+        }
+
+        // more than one node in the list
+        temp_node_pointer = temp_node_pointer.next orelse unreachable;
+        singly_list.first = temp_node_pointer;
+        singly_list.len -= 1;
+
+        return;
+    }
 };
 
 test "SinglyStruct" {
@@ -64,7 +87,7 @@ test "SinglyStruct" {
     try expect(empty_list.len == 0);
 
     var singly_list = SinglyStruct{};
-    
+
     var node_1 = SinglyStruct.Node{.value = 0,};
     SinglyStruct.append(&singly_list,&node_1);
     try expect(singly_list.len ==  1);
@@ -87,7 +110,7 @@ test "SinglyStruct" {
     SinglyStruct.detach_last(&singly_list);
     try expect(singly_list.last.?.value ==  0);
 
-    SinglyStruct.detach_last(&singly_list);
+    SinglyStruct.detach_first(&singly_list);
     try expect(singly_list.last == null);
 
 }
