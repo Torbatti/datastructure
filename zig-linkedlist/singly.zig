@@ -41,7 +41,7 @@ const SinglyStruct = struct {
 
                 singly_list.first = null;
                 singly_list.last = null;
-                singly_list.len -= 1;
+                singly_list.len = 0;
                 return;
             };
 
